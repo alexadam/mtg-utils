@@ -7,11 +7,18 @@ class Proxy extends React.Component {
     constructor(props) {
         super(props);
         this.imageRef = React.createRef()
-      }
+        this.openFileRef = React.createRef()
+    }
 
     state = {
         fileDataURL: this.props.data.fileDataURL,
         nrOfCopies: this.props.data.nrOfCopies
+    }
+
+    componentDidMount = () => {
+        if (!this.props.data.defaultProxy) {
+            this.openFileRef.current.click()
+        }
     }
 
     onRemoveProxy = () => {
@@ -55,7 +62,7 @@ class Proxy extends React.Component {
                 </div>
                 <div className="mtg-proxy-menu">
                     <div className="mtg-proxy-menu-row">    
-                        <input type="file" id="file-input" onChange={this.openFile}/>
+                        <input type="file" id="file-input" ref={this.openFileRef} onChange={this.openFile}/>
                     </div>
                     <div className="mtg-proxy-menu-row"> 
                         <span className="mtg-proxy-menu-label">Nr. of copies:</span>
@@ -72,13 +79,18 @@ class Proxy extends React.Component {
 
 export default class ProxyList extends React.Component {
 
-    state = {
-        data: {
-            1: {
-                fileDataURL: '',
-                nrOfCopies: 1
-            }
+    indexKey = 1
+
+    defaultdData = {
+        0: {
+            fileDataURL: '',
+            nrOfCopies: 1,
+            defaultProxy: true
         }
+    }
+
+    state = {
+        data: this.defaultdData
     }
 
     onUpdateData = (key, value) => {
@@ -89,7 +101,7 @@ export default class ProxyList extends React.Component {
 
     addProxyCard = () => {
         let tmp = {...this.state.data}
-        let newKey = Math.floor(Math.random() * 10000000)
+        let newKey = this.indexKey++        
         tmp[newKey] = {
             fileDataURL: '',
             nrOfCopies: 1
@@ -103,12 +115,7 @@ export default class ProxyList extends React.Component {
 
         // if empty, add default
         if (Object.keys(tmp).length === 0) {
-            tmp = {
-                1: {
-                    fileDataURL: '',
-                    nrOfCopies: 1
-                }
-            }
+            tmp = this.defaultdData
         }
         this.setState({data: tmp})
     }
@@ -122,17 +129,22 @@ export default class ProxyList extends React.Component {
       
         let index = 0
         let page = 0
-        let row = 0 // Math.floor(index / 3) 
-        let col = 0 //index % 3
+        let row = 0
+        let col = 0
+        let marginLeft = 10
+        let marginTop = 10
+        let cardWidth = 63
+        let cardHeight = 88
+        let cardMarginRight = 2
+        let cardMarginTop = 2
 
         for (const key in this.state.data) {
-            const element = this.state.data[key]
+            let element = this.state.data[key]
 
             for(let i=0;i<element.nrOfCopies;i++){
                 row = Math.floor(index / 3) 
                 col = index % 3
-                index++
-
+                
                 if (row > 2) {                    
                     pdf.addPage()
                     page++
@@ -141,11 +153,13 @@ export default class ProxyList extends React.Component {
                     col = index % 3
                 }
 
+                index++
+
                 pdf.addImage(element.fileDataURL, 'PNG',
-                    10 + (col * (63 + 2)),
-                    10 + (row * (88 + 2)),
-                    63,
-                    88
+                    marginLeft + (col * (cardWidth + cardMarginRight)),
+                    marginTop + (row * (cardHeight + cardMarginTop)),
+                    cardWidth,
+                    cardHeight
                 )
             }
         }
