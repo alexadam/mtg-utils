@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2,
+    "name": "MTG Card Search",
+    "description": "Magic the Gathering - Card Search",
+    "author": "alex adam",
+    "version": "0.1",
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "contextMenus",
+        "storage"
+    ],
+    "options_page": "options.html",
+    "options_ui": {
+        "page": "options.html"
+    }
+}
