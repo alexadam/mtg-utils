@@ -116,17 +116,17 @@ export default class ProxyList extends React.Component {
         this.setState({data: tmpArray})
     }
 
-    addProxyCard = (afterIndex) => {        
+    addProxyCard = (afterIndex, append = false) => {        
         let tmpArray = [...this.state.data]
         let tmpData = {
             id: Math.floor(Math.random() * 100000000 * Math.random() * 100000000),
             fileDataURL: '',
             nrOfCopies: 1
         }
-        if (!afterIndex) {
+        if (append) {
             tmpArray.push(tmpData)
         } else {
-            tmpArray.splice(afterIndex + 1, 0, tmpData)        
+            tmpArray.splice(afterIndex + 1, 0, tmpData)
         }
         this.setState({data: tmpArray})
     }
@@ -138,9 +138,10 @@ export default class ProxyList extends React.Component {
         // if empty, add default
         if (tmpArray.length === 0) {
             tmpArray.push({
-                id: 1,
+                id: Math.floor(Math.random() * 100000000 * Math.random() * 100000000),
                 fileDataURL: '',
-                nrOfCopies: 1
+                nrOfCopies: 1,
+                defaultProxy: true
             })
         }
         this.setState({data: tmpArray})
@@ -166,6 +167,10 @@ export default class ProxyList extends React.Component {
 
         for (const element of this.state.data) {
             for(let i=0;i<element.nrOfCopies;i++){
+                if (element.fileDataURL === '') {
+                    continue
+                }
+
                 row = Math.floor(index / 3) 
                 col = index % 3
                 
@@ -211,7 +216,7 @@ export default class ProxyList extends React.Component {
                     {proxies}
                 </div>
                 <div className="mtg-proxy-list-menu">
-                    <button className="mtg-btn-add-card mtg-btn" onClick={this.addProxyCard}>+ Add Proxy Card</button>
+                    <button className="mtg-btn-add-card mtg-btn" onClick={this.addProxyCard.bind(this, null, true)}>+ Add Proxy Card</button>
                     <button className="mtg-btn-save-pdf mtg-btn" onClick={this.preparePDF}>Save as PDF...</button>
                 </div>
                 
