@@ -8,6 +8,7 @@ class Proxy extends React.Component {
         super(props);
         this.imageRef = React.createRef()
         this.openFileRef = React.createRef()
+        this.nrOfCopiesRef = React.createRef()
     }
 
     state = {
@@ -31,6 +32,10 @@ class Proxy extends React.Component {
         }, () => {
             this.props.onUpdateData(this.props.id, this.state)
         })
+    }
+
+    onNrOfCopiesClick = () => {
+        this.nrOfCopiesRef.current.select()
     }
 
     openFile = (file) => {
@@ -62,11 +67,14 @@ class Proxy extends React.Component {
                 </div>
                 <div className="mtg-proxy-menu">
                     <div className="mtg-proxy-menu-row">    
-                        <input type="file" id="file-input" ref={this.openFileRef} onChange={this.openFile}/>
+                        <input type="file" className="mtg-proxy-file-input" ref={this.openFileRef} onChange={this.openFile}/>
                     </div>
                     <div className="mtg-proxy-menu-row"> 
                         <span className="mtg-proxy-menu-label">Nr. of copies:</span>
-                        <input type="number" value={this.state.nrOfCopies} min={1} onChange={this.onNrOfCopiesChange}/>
+                        <input type="number" value={this.state.nrOfCopies} min={1} 
+                                onChange={this.onNrOfCopiesChange} 
+                                ref={this.nrOfCopiesRef}
+                                onClick={this.onNrOfCopiesClick}/>
                     </div>
                     <div className="mtg-proxy-menu-row">    
                         <button onClick={this.onRemoveProxy}>Remove Card</button>

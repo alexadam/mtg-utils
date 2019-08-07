@@ -1,10 +1,10 @@
 
 
 .mtg-proxy-list {
-    width: 100%;
+    width: 100%; height: 100%;
     display: flex;
     flex-flow: column;
-    align-items: center;
+    justify-content: center;
 }
 
 .mtg-proxy-list-container {
@@ -13,22 +13,26 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-    padding-bottom: 150px;
+    margin-bottom: 150px;
 }
 
 .mtg-proxy-list-menu {
     position: fixed; bottom: 0;
+    // height: 100%; width: 25%;
     height: 100px; width: 100%;
     display: flex; flex-direction: column;
     padding: 10px;
     background-color: white;
     align-items: center;
+    justify-content: center;
+    // border-left: solid 1px black;
     border-top: solid 1px black;
 }
 
 .mtg-proxy {
     display: flex;
     flex-flow: row;
+    margin-top: 10px;
 }
 
 .mtg-proxy-menu {
@@ -52,12 +56,16 @@
     width: 157px; height: 220px;
 }
 
+.mtg-proxy-file-input {
+    width: 300px;
+}
+
 input[type=number] {
     width: 50px;
 }
 
 .mtg-btn {
-
+    cursor: pointer;
 }
 .mtg-btn-add-card {
     font-size: 20px;
